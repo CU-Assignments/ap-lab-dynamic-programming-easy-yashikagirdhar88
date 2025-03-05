@@ -1,0 +1,150 @@
+1. AIM:- . Climbing Stairs
+PROGRAM:- class Solution {
+public:
+    int climbStairs(int n) {
+        if (n == 1) return 1; 
+        if (n == 2) return 2; 
+        
+        int prev1 = 2; 
+        int prev2 = 1; 
+        int current;
+        
+        for (int i = 3; i <= n; ++i) {
+            current = prev1 + prev2; 
+            prev2 = prev1; 
+            prev1 = current; 
+        }
+        
+        return current;
+    }
+};
+2. AIM:- Maximum Subarray
+PROGRAM:- class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int max_sum = nums[0]; // Initialize max_sum with the first element
+        int current_sum = nums[0]; // Initialize current_sum with the first element
+        
+        for (int i = 1; i < nums.size(); ++i) {
+            current_sum = max(nums[i], current_sum + nums[i]); // Kadane's formula
+            max_sum = max(max_sum, current_sum); // Update max_sum if current_sum is greater
+        }
+        
+        return max_sum; // Return the largest sum found
+    }
+};
+
+3. AIM:- House Robber
+PROGRAM:- class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if (nums.size() == 1) return nums[0]; 
+        
+        int prev1 = max(nums[0], nums[1]); 
+        int prev2 = nums[0];
+        
+        for (int i = 2; i < nums.size(); ++i) {
+            int current = max(prev1, nums[i] + prev2); 
+            prev2 = prev1; 
+            prev1 = current; 
+        }
+        
+        return prev1; 
+    }
+};
+4. Best Time to Buy and Sell Stock
+PROGRAM:- class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int minPrice = INT_MAX; 
+        int maxProfit = 0;       
+        
+        for (int price : prices) {
+            if (price < minPrice) {
+                minPrice = price; 
+            }
+            maxProfit = max(maxProfit, price - minPrice); 
+        }
+        
+        return maxProfit;
+    }
+};
+5. AIM: Jump Game
+PROGRAM:- class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int maxReach = 0; // Farthest index we can reach
+        
+        for (int i = 0; i < nums.size(); ++i) {
+            if (i > maxReach) return false; // If current index is unreachable
+            maxReach = max(maxReach, i + nums[i]); // Update maxReach
+            if (maxReach >= nums.size() - 1) return true; // Early exit if last index is reachable
+        }
+        
+        return true;
+    }
+};
+6. Unique Paths
+PROGRAM:-class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        // Create a 2D vector dp initialized with 1s
+        vector<vector<int>> dp(m, vector<int>(n, 1));
+        
+        // Iterate through the grid starting from (1,1) since (0,*) and (*,0) are base cases
+        for (int i = 1; i < m; ++i) {
+            for (int j = 1; j < n; ++j) {
+                // Each cell is the sum of the cell above and the cell to the left
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            }
+        }
+        
+        // The bottom-right corner contains the number of unique paths
+        return dp[m - 1][n - 1];
+    }
+};
+7. AIM:- Coin Change
+PROGRAM:- class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        // Initialize dp array with a large value (amount + 1)
+        vector<int> dp(amount + 1, amount + 1);
+        
+        // Base case: 0 coins are needed to make amount 0
+        dp[0] = 0;
+        
+        // Iterate through all amounts from 1 to 'amount'
+        for (int i = 1; i <= amount; ++i) {
+            for (int coin : coins) {
+                if (i >= coin) {
+                    dp[i] = min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+        
+        // If dp[amount] is still amount + 1, no combination was found
+        return dp[amount] == amount + 1 ? -1 : dp[amount];
+    }
+};
+8. AIM:- Longest Increasing Subsequence
+PROGRAM:- class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n, 1); // Initialize dp array with 1
+        
+        int maxLength = 1; // At least one element is always a subsequence
+        
+        // Iterate through each element
+        for (int i = 1; i < n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (nums[j] < nums[i]) { // If we can extend LIS ending at j
+                    dp[i] = max(dp[i], dp[j] + 1);
+                }
+            }
+            maxLength = max(maxLength, dp[i]); // Update max LIS length
+        }
+        
+        return maxLength;
+    }
+};
